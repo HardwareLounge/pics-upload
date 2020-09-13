@@ -1,0 +1,23 @@
+#drop_zone {
+  background-color: blue;
+}
+
+.max {
+  position: absolute;
+  transition: 200ms ease;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/*
+$hwl-light: #7ac01e !default;
+$hwl-medium: #4e8719 !default;
+$hwl-dark: #204f14 !default;
+*/
+.shadow {
+  -webkit-box-shadow: inset 0px 0px 20vw 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: inset 0px 0px 20vmin 0px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0px 0px 50px 0px rgba(0, 0, 0, 0.75);
+}
