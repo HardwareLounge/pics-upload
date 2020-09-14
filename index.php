@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="de" dir="ltr">
 
@@ -21,7 +23,6 @@
           </a>
           <nav class="my-2 my-md-0 mr-md-3">
             <?php
-                session_start();
                 if ($_SESSION["bypass"]==1) {
                   echo "<a class=\"p-2 text-light\" href=\"#\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#uploadModal\">Hochladen</a>";
                   echo "<a class=\"p-2 text-light\" href=\"logout.php\">Abmelden</a>";

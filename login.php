@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -85,62 +85,48 @@
     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Passwort" required>
 
     <?php
-      session_start();
-
       if ($_POST["btn_sb"] == 'true') {
-        // code...
+        // Username
+        $user = $_POST["username"];
 
+        // Verbindung aufbauen
+        $conn = mysql();
 
-          // Username
-          $user = $_POST["username"];
+        // SQL Statment vorbereiten
+        $sql="SELECT * FROM user WHERE u_name='$user'";
 
-          // Verbindung aufbauen
-          $conn = mysql();
+        if ($conn->query($sql) == TRUE){
+            // Erhalten der Daten
+            $daten = $conn->query($sql)->fetch_assoc();
 
-          // SQL Statment vorbereiten
-          $sql="SELECT * FROM user WHERE u_name='$user'";
+            if (!isset($daten)) {
+              echo "Benutzername oder Password falsch!";
+            } else {
+              // Hash erhalten
+              $hash = $daten["u_hash"];
 
+              // Passwort Erhalten
+              $pw = $_POST["password"];
 
-          if ($conn->query($sql) == TRUE){
-
-              // Erhalten der Daten
-              $daten = $conn->query($sql)->fetch_assoc();
-
-              if (!isset($daten)) {
-                echo "Benutzername Falsch";
-              }else {
-
-                // Hash erhalten
-                $hash = $daten["u_hash"];
-                // Passwort Erhalten
-                $pw = $_POST["password"];
-
-                if( password_verify($pw, $hash) )
-                {
-                  $_SESSION["bypass"]=1;
-                  $_SESSION["u_id"]=$daten["u_id"];
-                  echo "<script> window.location.href =\"./\"</script>";
-
-                }
-                else
-                {
-                 echo 'Passwort ist falsch!';
-                }
+              if(password_verify($pw, $hash)) {
+                $_SESSION["bypass"]=1;
+                $_SESSION["u_id"]=$daten["u_id"];
+                echo "<script> window.location.href =\"./\"</script>";
+              } else {
+                echo "Passwort ist falsch!";
               }
-
-
-          }else {
-            echo "e";
-            echo "Ein Datenbankfehler ist aufgetreten: ".$conn->error;
-          }
-      }else {
+            }
+        } else {
+          echo "Ein Datenbankfehler ist aufgetreten: ".$conn->error;
+        }
+      } else {
 
       }
 
 
       function mysql(){
 
-        $servername = "localhost";
+        $servername = "127.0.0.1:3306";
         $username = "pics";
         $password = "pw";
         $db = "pics";
@@ -149,7 +135,7 @@
 
         if ($conn->connect_error) {
             die($conn->connect_error);
-        }else {
+        } else {
           return $conn;
         }
 
