@@ -13,47 +13,47 @@ session_destroy();
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
   <style media="screen">
+    body {
+      width: 100vw;
+      height: 100vh;
+    }
+
     .main {
       position: absolute;
       max-width: 50%;
       max-height: 50%;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(1);
       text-align: center;
-    }
-
-    .center-logo {
       border-radius: 10%;
-
       box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
-      transform: scale(1);
       animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
     	0% {
-    		transform: scale(0.95);
+    		transform: translate(-50%, -50%) scale(0.95);
     		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
     	}
 
     	70% {
-    		transform: scale(1);
+    		transform: translate(-50%, -50%) scale(1);
     		box-shadow: 0 0 0 3rem rgba(0, 0, 0, 0);
     	}
 
     	100% {
-    		transform: scale(0.95);
+    		transform: translate(-50%, -50%) scale(0.95);
     		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
     	}
     }
   </style>
 </head>
 
-<body style="width: 100vw; height: 100vh">
-  <div class="main">
+<body>
+  <div class="main pulse">
     <img class="center-logo" src="https://www.hardwarelounge.net/img/logob.png">
-    <h1>Du wirst abgemeldet...</h1>
+    <h1 >Du wirst abgemeldet...</h1>
   </div>
 
   <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalTitle" aria-hidden="true" action="upload.php" method="post" enctype="multipart/form-data">
