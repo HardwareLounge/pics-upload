@@ -1,16 +1,4 @@
-<?php
 
-$failed = false;
-
-if(isset($_POST['username']) && isset($_POST['password'])) {
-  if($_POST['username'] == 'testuser' && $_POST['password'] == 'testpassword') {
-    header('Location: index.php');
-  } else {
-    $failed = true;
-  }
-}
-
-?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -86,7 +74,7 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
 
 <body class="text-center">
   <form class="form-signin" method="post">
-    <img class="mb-4 logo" src="https://www.hardwarelounge.net/img/logob.png" alt="Logo" width="92" height="92">
+    <a href="./"><img class="mb-4 logo" src="https://www.hardwarelounge.net/img/logob.png" alt="Logo" width="92" height="92"></a>
 
     <h1 class="h3 mb-3 font-weight-normal">Anmelden</h1>
 
@@ -97,10 +85,78 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Passwort" required>
 
     <?php
-      if($failed) echo('<small style="color: red">Benutzername oder Passwort falsch!</small>');
+      session_start();
+
+      if ($_POST["btn_sb"] == 'true') {
+        // code...
+
+
+          // Username
+          $user = $_POST["username"];
+
+          // Verbindung aufbauen
+          $conn = mysql();
+
+          // SQL Statment vorbereiten
+          $sql="SELECT * FROM user WHERE u_name='$user'";
+
+
+          if ($conn->query($sql) == TRUE){
+
+              // Erhalten der Daten
+              $daten = $conn->query($sql)->fetch_assoc();
+
+              if (!isset($daten)) {
+                echo "Benutzername Falsch";
+              }else {
+
+                // Hash erhalten
+                $hash = $daten["u_hash"];
+                // Passwort Erhalten
+                $pw = $_POST["password"];
+
+                if( password_verify($pw, $hash) )
+                {
+                  $_SESSION["bypass"]=1;
+                  $_SESSION["u_id"]=$daten["u_id"];
+                  echo "<script> window.location.href =\"./\"</script>";
+
+                }
+                else
+                {
+                 echo 'Passwort ist falsch!';
+                }
+              }
+
+
+          }else {
+            echo "e";
+            echo "Ein Datenbankfehler ist aufgetreten: ".$conn->error;
+          }
+      }else {
+
+      }
+
+
+      function mysql(){
+
+        $servername = "localhost";
+        $username = "pics";
+        $password = "pw";
+        $db = "pics";
+
+        $conn = new mysqli($servername, $username, $password, $db);
+
+        if ($conn->connect_error) {
+            die($conn->connect_error);
+        }else {
+          return $conn;
+        }
+
+      }
     ?>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Anmelden</button>
+    <button class="btn btn-lg btn-primary btn-block" name="btn_sb" value="true" type="submit">Anmelden</button>
 
     <p class="mt-5 mb-3 text-muted">Copyright © 2020 by <br/>Kyle Henselmann & Christian Schliz</p>
   </form>
