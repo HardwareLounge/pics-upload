@@ -20,8 +20,17 @@
             <strong>Pics</strong>
           </a>
           <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-light" href="#" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">Hochladen</a>
-            <a class="p-2 text-light" href="login.php">Anmelden</a>
+            <?php
+                session_start();
+                if ($_SESSION["bypass"]==1) {
+                  echo "<a class=\"p-2 text-light\" href=\"#\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#uploadModal\">Hochladen</a>";
+                  echo "<a class=\"p-2 text-light\" href=\"logout.php\">Abmelden</a>";
+                }else {
+                  echo "<a class=\"p-2 text-light\" href=\"login.php\">Anmelden</a>";
+                }
+             ?>
+            <!-- <a class="p-2 text-light" href="#" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">Hochladen</a> -->
+
           </nav>
         </div>
       </div>
@@ -52,15 +61,15 @@
         <div class="modal-body">
 
           <div class="form-group">
-            <label for="titleText">Titel</label>
-            <input type="email" class="form-control" id="titleText" aria-describedby="emailHelp" placeholder="Gib deinem Bild einen Titel...">
+            <label for="title">Titel</label>
+            <input type="titel" name="titel" class="form-control" id="title" placeholder="Gib deinem Bild einen Titel...">
           </div>
           <div class="form-group">
             <label for="imageFile">Bild</label>
-            <input type="file" class="form-control" id="imageFile">
+            <input type="file" name="file" class="form-control" id="imageFile">
           </div>
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="publicCheck">
+            <input type="checkbox"  name="checkbox" class="form-check-input" id="publicCheck">
             <label class="form-check-label" for="publicCheck">Für jeden Sichtbar</label>
             <small id="publicHelp" class="form-text text-muted">Auch Benutzer ohne HWL Account können das Bild sehen</small>
           </div>
