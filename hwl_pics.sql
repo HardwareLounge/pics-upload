@@ -29,18 +29,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `picture` (
   `p_id` int(11) NOT NULL COMMENT 'Bild ID',
-  `p_pfad` varchar(50) NOT NULL COMMENT 'Pfad des Bildes',
-  `p_datei_typ` varchar(10) NOT NULL COMMENT 'Datei typ des Bildes',
-  `p_upload_datum` datetime NOT NULL COMMENT 'Datum des Uploads',
-  `p_titel` varchar(50) DEFAULT NULL COMMENT 'Titel des Users',
-  `p_öffentlich` tinyint(4) NOT NULL DEFAULT 1 COMMENT 'Ist das Bild Öffentlich'
+  `p_path` varchar(50) NOT NULL COMMENT 'Pfad des Bildes',
+  `p_file_type` varchar(10) NOT NULL COMMENT 'Datei typ des Bildes',
+  `p_upload_date` datetime NOT NULL COMMENT 'Datum des Uploads',
+  `p_title` varchar(50) DEFAULT NULL COMMENT 'Titel des Users',
+  `p_public` tinyint(4) NOT NULL DEFAULT 1 COMMENT 'Ist das Bild Öffentlich'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `picture`
 --
 
-INSERT INTO `picture` (`p_id`, `p_pfad`, `p_datei_typ`, `p_upload_datum`, `p_titel`, `p_öffentlich`) VALUES
+INSERT INTO `picture` (`p_id`, `p_path`, `p_file_type`, `p_upload_date`, `p_title`, `p_public`) VALUES
 (1, 'test', 'png', '2020-09-16 14:13:13', 'test', 1),
 (2, 'VEM9sJMUhEO8m7ZS3ohc', 'image/png', '2020-09-14 14:36:34', 'Tes Bild', 1);
 
@@ -53,7 +53,7 @@ INSERT INTO `picture` (`p_id`, `p_pfad`, `p_datei_typ`, `p_upload_datum`, `p_tit
 CREATE TABLE `uploads` (
   `up_id` int(11) NOT NULL COMMENT 'Upload_Id',
   `up_p_id` int(11) NOT NULL,
-  `up_v_id` int(11) NOT NULL
+  `up_u_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

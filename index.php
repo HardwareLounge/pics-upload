@@ -37,13 +37,58 @@
       </div>
     </header>
 
-    <div class="container" style="margin-top: 2rem;">
+    <div class="container">
 
-      <!-- content here -->
-      <p>
-        Content Content Content
-      </p>
+      <div class="container" style="margin-top: 2rem;">
 
+        <h2>Die Neusten Bilder:</h2>
+
+        <div class="space-2rem"></div>
+
+        <div id="image-grid" class="row">
+          <?php
+          $conn = mysql();
+
+          $query = "SELECT * FROM picture WHERE p_public = TRUE ORDER BY p_upload_date DESC;";
+
+          foreach ($conn->query($query) as $row) {
+            $title = $row['p_title'];
+            if($title == "") {
+              $title = '<span style="color: gray;"><i>Unbenannt</i></span>';
+            }
+            echo '
+              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pointer" style="margin-bottom: 2rem" onclick="window.location.href=\'/up/'.$row['p_path'].'\'">
+                <div class="card growHover" style="padding: auto;">
+                  <div class="img-container" style="background-image: url(\'/up/'.$row['p_path'].'\');"></div>
+                  <div class="card-body">
+                    <h5 class="card-title">'.$title.'</h5>
+                    <p class="card-text" style="color: gray">Hochgeladen von: </p>
+                    <small>'.$row['p_upload_date'].'</small>
+                  </div>
+                </div>
+              </div>
+            ';
+          }
+
+          function mysql() {
+            // function to initialize mysql connection
+
+            $servername = "127.0.0.1:3306";
+            $username = "pics";
+            $password = "pw";
+            $db = "pics";
+
+            $conn = new mysqli($servername, $username, $password, $db);
+
+            if ($conn->connect_error) {
+                die($conn->connect_error);
+            } else {
+              return $conn;
+            }
+          }
+          ?>
+        </div>
+      </div>
     </div>
   </main>
 

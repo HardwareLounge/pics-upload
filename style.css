@@ -21,3 +21,26 @@ $hwl-dark: #204f14 !default;
   -moz-box-shadow: inset 0px 0px 20vmin 0px rgba(0, 0, 0, 0.75);
   box-shadow: inset 0px 0px 50px 0px rgba(0, 0, 0, 0.75);
 }
+
+.img-container {
+  height: 200px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.growHover {
+  transition: transform 500ms;
+}
+
+.growHover:hover {
+  transform: scale(1.1);
+}
+
+.space-2rem {
+  height: 2rem;
+}
+
+.pointer {
+  cursor: pointer;
+}

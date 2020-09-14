@@ -51,10 +51,14 @@ session_destroy();
 </head>
 
 <body>
+  <!--
   <div class="main pulse">
     <img class="center-logo" src="https://www.hardwarelounge.net/img/logob.png">
     <h1 >Du wirst abgemeldet...</h1>
   </div>
+  -->
+
+  <img class="main pulse" src="/app_img/hwl_progress_signout.png" alt="Du wirst abgemeldet">
 
   <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalTitle" aria-hidden="true" action="upload.php" method="post" enctype="multipart/form-data">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -78,7 +82,7 @@ session_destroy();
   <script type="text/javascript">
     $('#infoModal').modal('show');
     $('#infoModal').on('hide.bs.modal', () => {
-      window.location.href = "/";
+      //window.location.href = "/";
     });
   </script>
 </body>

@@ -109,9 +109,9 @@
               $pw = $_POST["password"];
 
               if(password_verify($pw, $hash)) {
-                $_SESSION["bypass"]=1;
-                $_SESSION["u_id"]=$daten["u_id"];
-                echo "<script> window.location.href =\"./\"</script>";
+                $_SESSION["bypass"] = 1;
+                $_SESSION["u_id"] = $daten["u_id"];
+                echo "<script> window.location.href =\"/\"</script>";
               } else {
                 echo "Passwort ist falsch!";
               }
