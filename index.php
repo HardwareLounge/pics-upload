@@ -52,13 +52,22 @@ include 'sql.php';
           <?php
           $conn = mysql();
 
-          $query = "SELECT * FROM picture p,uploads up, user u  WHERE p.p_public = TRUE AND p.p_id = up.up_p_id AND u.u_id = up.up_u_id ORDER BY p_upload_date DESC;";
+          $query = "";
+          if ($_SESSION["bypass"] == 1) {
+            $query = "SELECT * FROM picture p, uploads up, user u WHERE p.p_public = TRUE AND p.p_id = up.up_p_id AND u.u_id = up.up_u_id ORDER BY p_upload_date DESC;";
+          } else {
+            $query = "SELECT * FROM picture p, uploads up, user u WHERE p.p_id = up.up_p_id AND u.u_id = up.up_u_id ORDER BY p_upload_date DESC;";
+          }
 
           foreach ($conn->query($query) as $row) {
             $title = $row['p_title'];
             $name = $row['u_name'];
             if($title == "") {
               $title = '<span style="color: gray;"><i>Unbenannt</i></span>';
+            }
+            $private = "";
+            if($row['p_public'] != 1) {
+              $private = "<small style="color: rgba(255, 0, 0, 0.7)">private</small>"
             }
             echo '
               <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pointer" style="margin-bottom: 2rem" onclick="window.location.href=\'./up/'.$row['p_path'].'\'">
@@ -68,6 +77,7 @@ include 'sql.php';
                     <h5 class="card-title">'.$title.'</h5>
                     <p class="card-text" style="color: gray">Hochgeladen von: <b>'.$name.'</b> </p>
                     <small>'.$row['p_upload_date'].'</small>
+                    '.$private.'
                   </div>
                 </div>
               </div>

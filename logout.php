@@ -82,7 +82,7 @@ session_destroy();
   <script type="text/javascript">
     $('#infoModal').modal('show');
     $('#infoModal').on('hide.bs.modal', () => {
-      //window.location.href = "/";
+      window.location.href = "/";
     });
   </script>
 </body>
