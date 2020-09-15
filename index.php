@@ -65,9 +65,10 @@ include 'sql.php';
             if($title == "") {
               $title = '<span style="color: gray;"><i>Unbenannt</i></span>';
             }
+
             $private = "";
-            if($row['p_public'] != 1) {
-              $private = "<small style="color: rgba(255, 0, 0, 0.7)">private</small>"
+            if($row['p_public'] == 0) {
+              $private = "<small style=\"color: rgba(255, 0, 0, 0.7)\">private</small>"
             }
             echo '
               <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pointer" style="margin-bottom: 2rem" onclick="window.location.href=\'./up/'.$row['p_path'].'\'">
