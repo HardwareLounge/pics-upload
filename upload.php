@@ -80,113 +80,105 @@
 <?php
 
 if ($_SESSION["bypass"] == 1) {
+  // Variablen
 
-    // Variablen
-    $titel = $_POST["title"];
-    $checkbox = $_POST["checkbox"];
+  $titel = $_POST["title"];
+  $checkbox = $_POST["checkbox"];
 
-
-    if ($_FILES['file']['name'] != "") {
+  if ($_FILES['file']['name'] != "") {
     // Datei ist angegeben
 
-        // Erlaubte Datei Typen
-        $allowed_types = array("image/png", "image/jpeg", "image/gif");
+    // Erlaubte Datei Typen
+    $allowed_types = array("image/png", "image/jpeg", "image/gif");
 
 
-        if (!in_array($_FILES['file']['type'], $allowed_types)) {
-          // Datei ist nicht zugelassen
-            modal("Dieser Dateityp ist nicht zugelassen!", "/");
+    if (!in_array($_FILES['file']['type'], $allowed_types)) {
+      // Datei ist nicht zugelassen
+      modal("Dieser Dateityp ist nicht zugelassen!", "/");
 
-        } else {
-          // Datein Typ ist zugelassen
+    } else {
+      // Dateityp ist zugelassen
 
-            // Pfad herstellen
-            $randomString = generateRandomString();
-
-
-            // Datei verschieben
-            move_uploaded_file($_FILES['file']['tmp_name'], './up/'.$randomString);
+      // Pfad herstellen
+      $randomString = generateRandomString();
 
 
-            // Daten für Datenbank Konfigurieren
-              // Datetime
-              $date = new DateTime(null, new DateTimeZone('Europe/Berlin'));
-              $datetime=  $date->format('Y-m-d H:i:s');
-
-              // Datei Type
-              $datei_type = $_FILES['file']['type'];
-
-              // Titel
-              $titel = $_POST["titel"];
-
-              // Pfad
-              $pfad = $randomString;
+      // Datei verschieben
+      move_uploaded_file($_FILES['file']['tmp_name'], './up/'.$randomString);
 
 
-              // Öffentlich
-              if (isset($_POST["checkbox"])) {
-                $öffentlich = 1;
-              }else {
-                $öffentlich = 0;
-              }
+      // Daten für Datenbank Konfigurieren
+      $date = new DateTime(null, new DateTimeZone('Europe/Berlin'));
+      // Datetime
+      $datetime = $date->format('Y-m-d H:i:s');
 
-              // SQL Statment Vorbereiten
-              $sql = "INSERT INTO picture (p_path, p_file_type, p_upload_date, p_title, p_public) VALUES ('$pfad', '$datei_type', '$datetime', '$titel',$öffentlich);";
+      // Dateityp
+      $datei_type = $_FILES['file']['type'];
 
-              // Datrnbank verbidung aufbauen
-              $conn = mysql();
+      // Titel
+      $titel = $_POST["titel"];
 
-
-              if ($conn->query($sql)==TRUE) {
-
-                $sql = "SELECT p_id FROM picture ORDER BY p_upload_date DESC LIMIT 1";
-
-                if ($conn->query($sql)==TRUE) {
+      // Pfad
+      $pfad = $randomString;
 
 
-                    $daten = $conn->query($sql)->fetch_assoc();
-                    $p_id = $daten["p_id"];
-                    $u_id = $_SESSION["u_id"];
-
-                    $sql = "INSERT INTO uploads (up_p_id, up_u_id) VALUES ($p_id,$u_id)";
-
-                    if ($conn->query($sql)==TRUE){
-                          echo "<script> window.location.href =\"./up/".$randomString."\"</script>";
-                    }else {
-                      echo "Fehler ".$conn->error." <br>Sql: ".$sql;
-
-                      modal($conn->error, "/");
-
-                    }
-
-
-              }else {
-                // Zweites SQL Fehler
-              }
-
-            }else {
-              // Ersten SQL FEhler
-            }
-          }
-
-
-
-
-      } else if($_FILES['file']['name'] == "") {
-          // Keine Datei Angeben
-          modal("Keine Datei angegeben!", "/");
-      } else {
-
-        // Datei name nicht angegeben
-        modal("Fehler: ".$_FILES['file']['error'], "/");
-
+      // Öffentlich
+      if (isset($_POST["checkbox"])) {
+        $öffentlich = 1;
+      }else {
+        $öffentlich = 0;
       }
 
+      // SQL Statment Vorbereiten
+      $sql = "INSERT INTO picture (p_path, p_file_type, p_upload_date, p_title, p_public) VALUES ('$pfad', '$datei_type', '$datetime', '$titel',$öffentlich);";
+
+      // Datrnbank verbidung aufbauen
+      $conn = mysql();
+
+      if ($conn->query($sql)==TRUE) {
+        // Bild wurde in die Datenbank eingefügt
+
+        $sql = "SELECT p_id FROM picture ORDER BY p_upload_date DESC LIMIT 1";
+
+        if ($conn->query($sql)==TRUE) {
+
+          $daten = $conn->query($sql)->fetch_assoc();
+          $p_id = $daten["p_id"];
+          $u_id = $_SESSION["u_id"];
+
+          $sql = "INSERT INTO uploads (up_p_id, up_u_id) VALUES ($p_id,$u_id)";
+
+          if ($conn->query($sql)==TRUE){
+            echo "<script> window.location.href =\"./up/".$randomString."\"</script>";
+          } else {
+            echo "Fehler ".$conn->error." <br>Sql: ".$sql;
+            modal($conn->error, "/");
+          }
+
+        } else {
+          // Fehler bei der zweiten SQL Query
+        }
+
+      } else {
+        // Fehler bei der ersten SQL Query
+      }
+
+    }
+
+  } else if($_FILES['file']['name'] == "") {
+      // Keine Datei Angeben
+
+      modal("Keine Datei angegeben!", "/");
+  } else {
+    // Datei name nicht angegeben
+
+    modal("Fehler: ".$_FILES['file']['error'], "/");
+  }
 
 } else {
   // Es ist niemand angemeldet
-  modal("Nicht eingeloggt", "./login.php");
 
+  modal("Nicht eingeloggt", "./login.php");
 }
 
 
