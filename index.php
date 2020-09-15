@@ -18,7 +18,7 @@
       <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
           <a href="#" class="navbar-brand d-flex align-items-center">
-            <img src="https://www.hardwarelounge.net/img/logob.png" width="38" height="38" style="margin: 0; margin-right: 1rem; padding: 6px; background-color: white; border-radius: 6px;">
+            <img src="https://www.hardwarelounge.net/img/logo.png" width="125" height="35" style="margin: 0; margin-right: 1rem;">
             <strong>Pics</strong>
           </a>
           <nav class="my-2 my-md-0 mr-md-3">
@@ -49,20 +49,21 @@
           <?php
           $conn = mysql();
 
-          $query = "SELECT * FROM picture WHERE p_public = TRUE ORDER BY p_upload_date DESC;";
+          $query = "SELECT * FROM picture p,uploads up, user u  WHERE p.p_public = TRUE AND p.p_id = up.up_p_id AND u.u_id = up.up_u_id ORDER BY p_upload_date DESC;";
 
           foreach ($conn->query($query) as $row) {
             $title = $row['p_title'];
+            $name = $row['u_name'];
             if($title == "") {
               $title = '<span style="color: gray;"><i>Unbenannt</i></span>';
             }
             echo '
-              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pointer" style="margin-bottom: 2rem" onclick="window.location.href=\'/up/'.$row['p_path'].'\'">
+              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pointer" style="margin-bottom: 2rem" onclick="window.location.href=\'./up/'.$row['p_path'].'\'">
                 <div class="card growHover" style="padding: auto;">
-                  <div class="img-container" style="background-image: url(\'/up/'.$row['p_path'].'\');"></div>
+                  <div class="img-container" style="background-image: url(\'./up/'.$row['p_path'].'\');"></div>
                   <div class="card-body">
                     <h5 class="card-title">'.$title.'</h5>
-                    <p class="card-text" style="color: gray">Hochgeladen von: </p>
+                    <p class="card-text" style="color: gray">Hochgeladen von: <b>'.$name.'</b> </p>
                     <small>'.$row['p_upload_date'].'</small>
                   </div>
                 </div>
@@ -74,9 +75,9 @@
             // function to initialize mysql connection
 
             $servername = "127.0.0.1:3306";
-            $username = "pics";
-            $password = "pw";
-            $db = "pics";
+            $username = "hwlpics";
+            $password = "1234Hase!";
+            $db = "hwl_pics";
 
             $conn = new mysqli($servername, $username, $password, $db);
 
