@@ -111,7 +111,7 @@
               if(password_verify($pw, $hash)) {
                 $_SESSION["bypass"] = 1;
                 $_SESSION["u_id"] = $daten["u_id"];
-                echo "<script> window.location.href =\"/\"</script>";
+                echo "<script> window.location.href =\"./\"</script>";
               } else {
                 echo "Passwort ist falsch!";
               }
@@ -127,9 +127,9 @@
       function mysql(){
 
         $servername = "127.0.0.1:3306";
-        $username = "pics";
-        $password = "pw";
-        $db = "pics";
+        $username = "hwlpics";
+        $password = "1234Hase!";
+        $db = "hwl_pics";
 
         $conn = new mysqli($servername, $username, $password, $db);
 

@@ -48,14 +48,14 @@
 </head>
 
 <body>
-  <!--
+
   <div class="main pulse">
     <img class="center-logo" src="https://www.hardwarelounge.net/img/logob.png">
     <h1>Bild wird hochgeladen...</h1>
   </div>
-  -->
 
-  <img class="main pulse" src="/app_img/hwl_progress_upload.png" alt="Du wirst abgemeldet">
+
+  <img class="main pulse" src="./app_img/hwl_progress_upload.png" alt="Du wirst abgemeldet">
 
   <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalTitle" aria-hidden="true" action="upload.php" method="post" enctype="multipart/form-data">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -81,85 +81,156 @@
 
 if ($_SESSION["bypass"] == 1) {
 
-  $titel = $_POST["title"];
-  $checkbox = $_POST["checkbox"];
-
-  if ($_FILES['file']['name'] != "") {
-    // file name is not empty
-
-    $allowed_types = array("image/png", "image/jpeg", "image/gif");
-
-    if (!in_array($_FILES['file']['type'], $allowed_types)) {
-
-      modal("Dieser Dateityp ist nicht zugelassen!", "/");
-
-    } else {
-      $randomString = generateRandomString();
-
-      move_uploaded_file($_FILES['file']['tmp_name'], './up/'.$randomString);
+    // Variablen
+    $titel = $_POST["title"];
+    $checkbox = $_POST["checkbox"];
 
 
-      // Daten für Datenbank Konfigurieren
-      // Datetime
-      $date = new DateTime(null, new DateTimeZone('Europe/Berlin'));
-      $datetime=  $date->format('Y-m-d H:i:s');
+    if ($_FILES['file']['name'] != "") {
+    // Datei ist angegeben
 
-      // Datei Type
-      $datei_type = $_FILES['file']['type'];
+        // Erlaubte Datei Typen
+        $allowed_types = array("image/png", "image/jpeg", "image/gif");
 
-      // Titel
-      $titel = $_POST["title"];
 
-      // Pfad
-      $pfad = $randomString;
+        if (!in_array($_FILES['file']['type'], $allowed_types)) {
+          // Datei ist nicht zugelassen
+            modal("Dieser Dateityp ist nicht zugelassen!", "/");
 
-      // Öffentlich
-      if (isset($_POST["checkbox"])) {
-        $öffentlich = 1;
-      }else {
-        $öffentlich = 0;
-      }
+        } else {
+          // Datein Typ ist zugelassen
 
-      $sql = "INSERT INTO picture (p_path, p_file_type, p_upload_date, p_title, p_public) VALUES ('$pfad', '$datei_type', '$datetime', '$titel',$öffentlich);";
+            // Pfad herstellen
+            $randomString = generateRandomString();
 
-      $conn = mysql();
-      if ($conn->query($sql)==TRUE) {
-        echo "<script> window.location.href =\"./up/".$randomString."\"</script>";
+
+            // Datei verschieben
+            move_uploaded_file($_FILES['file']['tmp_name'], './up/'.$randomString);
+
+
+            // Daten für Datenbank Konfigurieren
+              // Datetime
+              $date = new DateTime(null, new DateTimeZone('Europe/Berlin'));
+              $datetime=  $date->format('Y-m-d H:i:s');
+
+              // Datei Type
+              $datei_type = $_FILES['file']['type'];
+
+              // Titel
+              $titel = $_POST["titel"];
+
+              // Pfad
+              $pfad = $randomString;
+
+
+              // Öffentlich
+              if (isset($_POST["checkbox"])) {
+                $öffentlich = 1;
+              }else {
+                $öffentlich = 0;
+              }
+
+              // SQL Statment Vorbereiten
+              $sql = "INSERT INTO picture (p_path, p_file_type, p_upload_date, p_title, p_public) VALUES ('$pfad', '$datei_type', '$datetime', '$titel',$öffentlich);";
+
+              // Datrnbank verbidung aufbauen
+              $conn = mysql();
+
+
+              if ($conn->query($sql)==TRUE) {
+
+                $sql = "SELECT p_id FROM picture ORDER BY p_upload_date DESC LIMIT 1";
+
+                if ($conn->query($sql)==TRUE) {
+
+
+                    $daten = $conn->query($sql)->fetch_assoc();
+                    $p_id = $daten["p_id"];
+                    $u_id = $_SESSION["u_id"];
+
+                    $sql = "INSERT INTO uploads (up_p_id, up_u_id) VALUES ($p_id,$u_id)";
+
+                    if ($conn->query($sql)==TRUE){
+                          echo "<script> window.location.href =\"./up/".$randomString."\"</script>";
+                    }else {
+                      echo "Fehler ".$conn->error." <br>Sql: ".$sql;
+
+                      modal($conn->error, "/");
+
+                    }
+
+
+              }else {
+                // Zweites SQL Fehler
+              }
+
+            }else {
+              // Ersten SQL FEhler
+            }
+          }
+
+
+
+
+      } else if($_FILES['file']['name'] == "") {
+          // Keine Datei Angeben
+          modal("Keine Datei angegeben!", "/");
       } else {
-        modal($conn->error, "/");
+
+        // Datei name nicht angegeben
+        modal("Fehler: ".$_FILES['file']['error'], "/");
+
       }
 
-    }
-
-  } else if($_FILES['file']['name'] == "") {
-    modal("Keine Datei angegeben!", "/");
-  } else {
-    modal("Fehler: ".$_FILES['file']['error'], "/");
-  }
 
 } else {
   // Es ist niemand angemeldet
+  modal("Nicht eingeloggt", "./login.php");
 
-  modal("Nicht eingeloggt", "/login.php");
 }
 
-function generateRandomString($length = 20) {
+
+function generateRandomString($length = 6) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
+    // $randomString = checkString($randomString);
     return $randomString;
+}
+
+function checkString($string){
+
+  // SQL Verbindung Aufbauen
+  $conn = mysql();
+
+    while (TRUE) {
+
+      $sql="SELECT * FROM picture WHERE p_path='$string'";
+
+      if ($conn->$query($sql)==TRUE) {
+
+      if (!isset($string)) {
+        return $string;
+        break;
+      }else {
+        $string = generateRandomString();
+      }
+    }
+
+  }
+
 }
 
 function mysql(){
   // function to initialize mysql connection
 
   $servername = "127.0.0.1:3306";
-  $username = "pics";
-  $password = "pw";
-  $db = "pics";
+  $username = "hwlpics";
+  $password = "1234Hase!";
+  $db = "hwl_pics";
 
   $conn = new mysqli($servername, $username, $password, $db);
 
