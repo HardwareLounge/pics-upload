@@ -1,6 +1,11 @@
-<?php session_start(); ?>
+<?php
+session_start();
+include 'sql.php';
+?>
+
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -120,24 +125,6 @@
           echo "Ein Datenbankfehler ist aufgetreten: ".$conn->error;
         }
       } else {
-
-      }
-
-
-      function mysql(){
-
-        $servername = "127.0.0.1:3306";
-        $username = "hwlpics";
-        $password = "1234Hase!";
-        $db = "hwl_pics";
-
-        $conn = new mysqli($servername, $username, $password, $db);
-
-        if ($conn->connect_error) {
-            die($conn->connect_error);
-        } else {
-          return $conn;
-        }
 
       }
     ?>
