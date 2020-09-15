@@ -210,7 +210,7 @@ function checkString($string){
       if (!isset($string)) {
         return $string;
         break;
-      }else {
+      } else {
         $string = generateRandomString();
       }
     }

@@ -53,7 +53,7 @@ include 'sql.php';
           $conn = mysql();
 
           $query = "";
-          if ($_SESSION["bypass"] == 1) {
+          if ($_SESSION["bypass"] != 1) {
             $query = "SELECT * FROM picture p, uploads up, user u WHERE p.p_public = TRUE AND p.p_id = up.up_p_id AND u.u_id = up.up_u_id ORDER BY p_upload_date DESC;";
           } else {
             $query = "SELECT * FROM picture p, uploads up, user u WHERE p.p_id = up.up_p_id AND u.u_id = up.up_u_id ORDER BY p_upload_date DESC;";
