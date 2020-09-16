@@ -71,7 +71,7 @@ include 'sql.php';
               $private = "<small style=\"color: rgba(255, 0, 0, 0.7)\">private</small>";
             }
             echo '
-              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pointer" style="margin-bottom: 2rem" onclick="window.location.href=\'./up/'.$row['p_path'].'\'">
+              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pointer" style="margin-bottom: 2rem" onclick="window.location.href=\'./image.php?i='.$row['p_path'].'\'">
                 <div class="card growHover" style="padding: auto;">
                   <div class="img-container" style="background-image: url(\'./up/'.$row['p_path'].'\');"></div>
                   <div class="card-body">
