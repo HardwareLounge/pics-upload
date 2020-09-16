@@ -48,5 +48,6 @@ if($res) {
   <h4><?php echo $title ?></h4>
   <img src="./up/<?php echo $imgpath ?>"><br/>
   <small><?php echo $uploaddate ?></small>
+  <h2><a href="./">Home</a></h2>
 </body>
 </html>
