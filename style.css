@@ -44,3 +44,9 @@ $hwl-dark: #204f14 !default;
 .pointer {
   cursor: pointer;
 }
+
+.img-container-large{
+  margin: 5%;
+  width: 90%
+  
+}
