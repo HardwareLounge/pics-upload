@@ -11,7 +11,7 @@ include 'sql.php';
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Hardwarelounge Pics</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./static/style.css">
 </head>
 
 <body>
@@ -29,7 +29,7 @@ include 'sql.php';
                 if ($_SESSION["bypass"]==1) {
                   echo "<a class=\"p-2 text-light\" href=\"#\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#uploadModal\">Hochladen</a>";
                   echo "<a class=\"p-2 text-light\" href=\"logout.php\">Abmelden</a>";
-                }else {
+                } else {
                   echo "<a class=\"p-2 text-light\" href=\"login.php\">Anmelden</a>";
                 }
              ?>

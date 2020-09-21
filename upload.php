@@ -58,7 +58,7 @@ include 'sql.php';
   </div>
 
 
-  <img class="main pulse" src="./app_img/hwl_progress_upload.png" alt="Du wirst abgemeldet">
+  <img class="main pulse" src="./static/hwl_progress_upload.png" alt="Du wirst abgemeldet">
 
   <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalTitle" aria-hidden="true" action="upload.php" method="post" enctype="multipart/form-data">
     <div class="modal-dialog modal-dialog-centered" role="document">
