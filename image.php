@@ -10,6 +10,31 @@ if(!isset($_GET['i'])) {
 ?>
 
 <!DOCTYPE html>
+
+<?php
+
+$conn = mysql();
+
+$sql = "SELECT * FROM picture WHERE p_path = \"".$imgpath."\"";
+
+$res = $conn->query($sql)->fetch_assoc();
+
+if($res) {
+  $title = $res['p_title'];
+  $isPublic = $res['p_public'];
+  $uploaddate = $res['p_upload_date'];
+
+  if(!$isPublic && !$_SESSION['bypass']) {
+    echo "<h1>403 – Unauthorized</h1>";
+    die();
+  }
+
+} else {
+  echo "<span color=\"red\">Kein Bild unter dem Pfad ".$imgpath." gefunden!</span>";
+}
+
+?>
+
 <html lang="de" dir="ltr">
 
 <head>
@@ -47,29 +72,6 @@ if(!isset($_GET['i'])) {
     </header>
 
     <div class="container">
-      <?php
-          $conn = mysql();
-
-          $sql = "SELECT * FROM picture WHERE p_path = \"".$imgpath."\"";
-
-          $res = $conn->query($sql)->fetch_assoc();
-
-          if($res) {
-          $title = $res['p_title'];
-          $isPublic = $res['p_public'];
-          $uploaddate = $res['p_upload_date'];
-
-          if(!$isPublic && !$_SESSION['bypass']) {
-            echo "<h1>403 – Unauthorized</h1>";
-            die();
-          }
-
-          } else {
-          echo "<span color=\"red\">Kein Bild unter dem Pfad ".$imgpath." gefunden!</span>";
-          }
-
-
-       ?>
 
         <div class="img-container-large">
           <img style="width: 100%;" src="./up/<?php echo $imgpath ?>"><br/>
